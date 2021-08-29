@@ -2,10 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { userPublicData } from './entities/user.entity';
+import { UserPersonalData, userPersonalData } from './interfaces/user';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
+
+  async publicUser(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+  ): Promise<UserPersonalData | null> {
+    return this.prisma.user.findUnique({
+      where: userWhereUniqueInput,
+      select: userPersonalData.select,
+    });
+  }
 
   async user(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
