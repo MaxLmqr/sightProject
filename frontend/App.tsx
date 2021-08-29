@@ -9,26 +9,19 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {LoginNavigator} from './src/navigator/login.navigator';
-import {MainNavigator} from './src/navigator/main.navigator';
-
-const Stack = createNativeStackNavigator();
+import {Store} from './src/store/configure.store';
+import {Provider} from 'react-redux';
+import {RootNavigator} from './src/navigator/root.navigator';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Auth"
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Stack.Screen name="Auth" component={LoginNavigator} />
-          <Stack.Screen name="Main" component={MainNavigator} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store={Store}>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </Provider>
     </SafeAreaView>
   );
 };
