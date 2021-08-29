@@ -4,8 +4,9 @@ import { PassportModule } from '@nestjs/passport';
 import { PrismaService } from 'src/prisma.service';
 import { UserModule } from 'src/user/user.module';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
-import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { LocalStrategy } from './local.strategy';
     }),
   ],
   providers: [AuthService, PrismaService, LocalStrategy, JwtStrategy],
-  exports: [AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule {}
