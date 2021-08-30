@@ -2,7 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserPersonalData, userPersonalData } from './interfaces/user';
+import {
+  UserPersonalData,
+  userPersonalData,
+  UserSelfData,
+  userSelfData,
+} from './interfaces/user';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
@@ -40,11 +45,12 @@ export class UserService {
   async updateUser(params: {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
-  }): Promise<User> {
+  }): Promise<UserSelfData> {
     const { where, data } = params;
     return this.prisma.user.update({
       data,
       where,
+      select: userSelfData.select,
     });
   }
 

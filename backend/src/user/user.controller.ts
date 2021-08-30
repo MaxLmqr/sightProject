@@ -7,12 +7,15 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User as UserModel } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserPersonalData } from './interfaces/user';
+import { userPersonalData, UserPersonalData } from './interfaces/user';
+import { AuthUser } from 'shared/auth.decorator';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -41,6 +44,18 @@ export class UserController {
     userData: CreateUserDto,
   ): Promise<UserModel> {
     return this.userService.createUser(userData);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('update')
+  async updateUser(
+    @AuthUser() user,
+    @Body() userData: UpdateUserDto,
+  ): Promise<any> {
+    return this.userService.updateUser({
+      where: { id: user.id },
+      data: userData,
+    });
   }
 
   @Delete('delete')

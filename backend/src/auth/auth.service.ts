@@ -2,6 +2,8 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
+import { User } from '@prisma/client';
+import { JwtPayload } from './types/jwt-payload';
 @Injectable()
 export class AuthService {
   constructor(
@@ -20,8 +22,8 @@ export class AuthService {
     }
   }
 
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.id };
+  async login(user: User) {
+    const payload: JwtPayload = { email: user.email, id: user.id };
 
     return {
       statusCode: HttpStatus.OK,
